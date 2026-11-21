@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { chapters } from '../data/chapters';
 import { playPurrSound, playMeowSound, playPaperTurnSound } from '../utils/catAudio';
+import { playBackgroundMusic } from '../components/AudioPlayer';
 
 export default function Home() {
   const [isOpening, setIsOpening] = useState(false);
@@ -11,6 +12,7 @@ export default function Home() {
   const handleCatPet = () => {
     playPurrSound();
     playMeowSound();
+    playBackgroundMusic();
   };
 
   const handleOpenBook = (e) => {
@@ -18,6 +20,7 @@ export default function Home() {
     if (isOpening) return;
     setIsOpening(true);
     playPaperTurnSound();
+    playBackgroundMusic();
     setTimeout(() => {
       navigate('/chapter/1');
     }, 600);

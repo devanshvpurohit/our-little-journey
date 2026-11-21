@@ -1,6 +1,40 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
-// Play realistic soft paper turn sound using Web Audio API white noise / lowpass filter
+// Singleton global audio instance so BGM persists across pages without restarts
+let globalAudio = null;
+let hasUserInteracted = false;
+let userManuallyPaused = false;
+
+export function getGlobalAudio() {
+  if (typeof window === 'undefined') return null;
+  if (!globalAudio) {
+    globalAudio = new Audio('/audio/bgm.mp3');
+    globalAudio.loop = true;
+    globalAudio.volume = 0.45;
+    globalAudio.preload = 'auto';
+  }
+  return globalAudio;
+}
+
+export function playBackgroundMusic() {
+  userManuallyPaused = false;
+  const audio = getGlobalAudio();
+  if (audio && audio.paused) {
+    return audio.play().catch(() => {
+      // Autoplay blocked by browser policy until interaction
+    });
+  }
+}
+
+export function pauseBackgroundMusic() {
+  userManuallyPaused = true;
+  const audio = getGlobalAudio();
+  if (audio && !audio.paused) {
+    audio.pause();
+  }
+}
+
+// Retain realistic paper turn sound for page flips
 export function playPaperTurnSound() {
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -40,84 +74,86 @@ export function playPaperTurnSound() {
 
 export default function AudioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioCtxRef = useRef(null);
-  const timerRef = useRef(null);
-  const stepRef = useRef(0);
-
-  const ghibliNotes = [
-    523.25, // C5
-    587.33, // D5
-    659.25, // E5
-    783.99, // G5
-    880.00, // A5
-    1046.50 // C6
-  ];
-  const melodySeq = [0, 2, 3, 4, 3, 2, 0, 1, 2, 4, 5, 4, 2, 3];
-
-  const playNote = (freq) => {
-    if (!audioCtxRef.current) return;
-    try {
-      const ctx = audioCtxRef.current;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, ctx.currentTime);
-
-      gain.gain.setValueAtTime(0.08, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.8);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc.start();
-      osc.stop(ctx.currentTime + 1.8);
-    } catch (e) {}
-  };
-
-  const toggleMelody = () => {
-    if (isPlaying) {
-      if (timerRef.current) clearInterval(timerRef.current);
-      setIsPlaying(false);
-    } else {
-      if (!audioCtxRef.current) {
-        audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtxRef.current.state === 'suspended') {
-        audioCtxRef.current.resume();
-      }
-
-      setIsPlaying(true);
-      timerRef.current = setInterval(() => {
-        const noteIndex = melodySeq[stepRef.current % melodySeq.length];
-        playNote(ghibliNotes[noteIndex]);
-        stepRef.current++;
-      }, 650);
-    }
-  };
 
   useEffect(() => {
+    const audio = getGlobalAudio();
+    if (!audio) return;
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+
+    // Initial state sync
+    setIsPlaying(!audio.paused);
+
+    // Auto-start on first user interaction with the page if not manually paused
+    const handleFirstInteraction = () => {
+      if (!hasUserInteracted) {
+        hasUserInteracted = true;
+        if (!userManuallyPaused && audio.paused) {
+          audio.play().catch(() => {});
+        }
+      }
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('keydown', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+    };
+
+    window.addEventListener('click', handleFirstInteraction, { once: true });
+    window.addEventListener('keydown', handleFirstInteraction, { once: true });
+    window.addEventListener('touchstart', handleFirstInteraction, { once: true });
+
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
     };
   }, []);
 
+  const toggleBgm = () => {
+    const audio = getGlobalAudio();
+    if (!audio) return;
+
+    if (isPlaying) {
+      pauseBackgroundMusic();
+    } else {
+      playBackgroundMusic();
+    }
+  };
+
   return (
     <button
-      onClick={toggleMelody}
-      title={isPlaying ? "Pause gentle melody" : "Play Ghibli music box melody"}
-      className={`group flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all shadow-sm active:scale-95 border ${
+      onClick={toggleBgm}
+      title={isPlaying ? "Pause background music (Jo Tum Mere Ho)" : "Play background music (Jo Tum Mere Ho)"}
+      className={`group flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all shadow-sm active:scale-95 border cursor-pointer ${
         isPlaying
-          ? 'bg-blush-400 border-blush-500 text-white shadow-md'
-          : 'bg-white/95 border-blush-200/90 hover:bg-blush-100 text-rose-dark'
+          ? 'bg-blush-500 hover:bg-blush-600 border-blush-600 text-white shadow-md'
+          : 'bg-white hover:bg-blush-50 border-blush-200/90 text-rose-dark hover:border-blush-300'
       }`}
     >
-      <span className={`material-symbols-outlined text-[17px] ${isPlaying ? 'animate-spin text-white' : 'group-hover:rotate-12 transition-transform'}`}>
-        {isPlaying ? 'graphic_eq' : 'music_note'}
-      </span>
-      <span className="hidden sm:inline font-sans">
-        {isPlaying ? "Music Box Playing" : "Music Box"}
-      </span>
+      {isPlaying ? (
+        <>
+          {/* Animated Equalizer Bars */}
+          <div className="flex items-end space-x-0.5 h-3.5 my-auto">
+            <span className="w-1 bg-white rounded-full animate-bounce h-2.5"></span>
+            <span className="w-1 bg-white rounded-full animate-bounce h-3.5" style={{ animationDelay: '0.15s' }}></span>
+            <span className="w-1 bg-white rounded-full animate-bounce h-2" style={{ animationDelay: '0.3s' }}></span>
+          </div>
+          <span className="font-sans font-semibold tracking-tight text-[11px] sm:text-xs">
+            Jo Tum Mere Ho ♫
+          </span>
+        </>
+      ) : (
+        <>
+          <span className="material-symbols-outlined text-[16px] text-blush-500 group-hover:scale-110 transition-transform">
+            music_note
+          </span>
+          <span className="font-sans font-medium text-[11px] sm:text-xs">
+            <span className="hidden sm:inline">Play </span>Jo Tum Mere Ho ♫
+          </span>
+        </>
+      )}
     </button>
   );
 }

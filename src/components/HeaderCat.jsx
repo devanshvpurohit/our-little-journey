@@ -6,7 +6,7 @@ export default function HeaderCat() {
   const [speech, setSpeech] = useState(null);
   const [isPetting, setIsPetting] = useState(false);
 
-  const speeches = ["Meow! ♡", "Purr~ ✨", "Love you! 🐾", "Turn page! 📖", "Cozy! 🍵"];
+  const speeches = ["Meow! ✨", "Purr~ 🐾", "Best buddies! 🐾", "Turn page! 📖", "Cozy! 🍵"];
 
   const handleClick = () => {
     playMeowSound();
@@ -77,9 +77,9 @@ export default function HeaderCat() {
           <path d="M 46 58 Q 50 62 54 58" stroke="#874e58" strokeWidth="2.5" strokeLinecap="round" />
         </svg>
 
-        {/* Floating tiny heart on hover */}
+        {/* Floating tiny sparkle on hover */}
         <span className="absolute -top-1 -right-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-          ♡
+          ✨
         </span>
       </motion.button>
     </div>

@@ -30,20 +30,20 @@ function AppContent() {
   const match = location.pathname.match(/\/chapter\/(\d+)/);
   const currentChapterId = match ? parseInt(match[1], 10) : null;
 
-  // Floating heart burst on click
+  // Floating sparkle burst on click
   useEffect(() => {
     const handleClick = (e) => {
       if (e.target.closest('button') || e.target.closest('a') || e.target.closest('input')) return;
 
-      const heart = document.createElement('div');
-      heart.className = 'floating-heart select-none text-2xl';
-      const symbols = ['💖', '💕', '🌸', '🐾', '✨', '🌷'];
-      heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-      heart.style.left = `${e.clientX}px`;
-      heart.style.top = `${e.clientY}px`;
-      document.body.appendChild(heart);
+      const spark = document.createElement('div');
+      spark.className = 'floating-heart select-none text-2xl';
+      const symbols = ['✨', '⭐', '🌸', '🐾', '🌟', '🍃', '🐱'];
+      spark.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      spark.style.left = `${e.clientX}px`;
+      spark.style.top = `${e.clientY}px`;
+      document.body.appendChild(spark);
 
-      setTimeout(() => heart.remove(), 1400);
+      setTimeout(() => spark.remove(), 1400);
     };
 
     window.addEventListener('click', handleClick);

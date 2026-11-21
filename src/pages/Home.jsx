@@ -127,7 +127,7 @@ export default function Home() {
               <span className="text-base animate-bounce">🐾</span>
             </h3>
             <p className="text-xs text-rose-earth/70 font-sans mt-0.5">
-              {chapters.length} chapters bound together with love • Click any page to open
+              {chapters.length} chapters of unforgettable memories • Click any page to open
             </p>
           </div>
           <span className="font-handwriting text-xl text-blush-500 font-bold">

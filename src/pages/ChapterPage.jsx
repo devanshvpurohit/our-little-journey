@@ -19,7 +19,7 @@ function LeftPageContent({ chapter, onImageZoom }) {
           </span>
         </div>
         <div className="border border-dashed border-rose-earth/60 px-2 py-0.5 rounded text-[10px] font-mono uppercase text-rose-earth/70 tracking-widest rotate-6">
-          VALENTINE AIRMAIL • NO. {chapter.id}
+          SPECIAL AIRMAIL • NO. {chapter.id}
         </div>
       </div>
 

@@ -17,7 +17,7 @@ export default function SunsetEnding() {
     });
   }, []);
 
-  const triggerLoveFireworks = (e) => {
+  const triggerFireworks = (e) => {
     playMeowSound();
     const rect = e.target.getBoundingClientRect();
     const x = (rect.left + rect.width / 2) / window.innerWidth;
@@ -124,13 +124,13 @@ export default function SunsetEnding() {
               />
             </motion.g>
 
-            {/* Floating Heart between them */}
+            {/* Floating Sparkle / Star between them */}
             <motion.path
-              d="M 95 32 Q 95 24 100 24 Q 105 24 105 30 Q 105 36 95 44 Q 85 36 85 30 Q 85 24 90 24 Q 95 24 95 32 Z"
-              fill="#e0526e"
-              animate={{ scale: [1, 1.25, 1], y: [0, -3, 0] }}
-              transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-              style={{ transformOrigin: '95px 32px' }}
+              d="M 95 24 L 97 31 L 104 33 L 97 35 L 95 42 L 93 35 L 86 33 L 93 31 Z"
+              fill="#e8c482"
+              animate={{ scale: [1, 1.25, 1], rotate: [0, 15, 0] }}
+              transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+              style={{ transformOrigin: '95px 33px' }}
             />
           </svg>
         </div>
@@ -159,7 +159,7 @@ export default function SunsetEnding() {
 
             <div className="pt-2 text-center">
               <span className="font-handwriting text-xl text-rose-dark font-bold block">
-                The most beautiful eyes in my whole world ♡
+                The most beautiful eyes in my whole world ✨
               </span>
               <span className="text-[11px] text-rose-earth/70 font-sans">
                 Every kindness and warmth reflected right here ✨
@@ -174,7 +174,7 @@ export default function SunsetEnding() {
         <div className="relative z-10 max-w-xl mx-auto mt-8 bg-white/95 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-blush-300 shadow-md text-left">
           <div className="flex items-center justify-between border-b border-blush-200 pb-3 mb-4">
             <span className="text-xs uppercase tracking-widest text-blush-500 font-bold">
-              A Letter from the Heart ♡
+              A Personal Letter to Dee ✨
             </span>
             <span className="font-handwriting text-sm text-rose-earth/70">
               Forever Chapter • For Dee
@@ -212,7 +212,7 @@ export default function SunsetEnding() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={triggerLoveFireworks}
+              onClick={triggerFireworks}
               className="w-full sm:w-auto bg-blush-500 hover:bg-blush-400 text-white font-medium px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <span className="material-symbols-outlined text-lg">celebration</span>

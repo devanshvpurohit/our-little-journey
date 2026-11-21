@@ -4,7 +4,7 @@ import { playMeowSound, playPurrSound } from '../utils/catAudio';
 
 export default function PlayfulCatCorner() {
   const [isBatting, setIsBatting] = useState(false);
-  const [hearts, setHearts] = useState([]);
+  const [sparks, setSparks] = useState([]);
 
   const handlePawClick = (e) => {
     e.stopPropagation();
@@ -12,10 +12,14 @@ export default function PlayfulCatCorner() {
     playMeowSound();
     playPurrSound();
 
-    const newHeart = { id: Date.now() };
-    setHearts((prev) => [...prev, newHeart]);
+    const symbols = ['✨', '⭐', '🐾', '🌟', '🌸'];
+    const newSpark = { 
+      id: Date.now(),
+      char: symbols[Math.floor(Math.random() * symbols.length)]
+    };
+    setSparks((prev) => [...prev, newSpark]);
     setTimeout(() => {
-      setHearts((prev) => prev.filter((h) => h.id !== newHeart.id));
+      setSparks((prev) => prev.filter((s) => s.id !== newSpark.id));
     }, 1200);
 
     setTimeout(() => setIsBatting(false), 400);
@@ -23,18 +27,18 @@ export default function PlayfulCatCorner() {
 
   return (
     <div className="fixed bottom-0 right-3 z-40 select-none pointer-events-auto">
-      {/* Little hearts emitted on tap */}
+      {/* Little sparkles emitted on tap */}
       <AnimatePresence>
-        {hearts.map((h) => (
+        {sparks.map((s) => (
           <motion.div
-            key={h.id}
+            key={s.id}
             initial={{ opacity: 1, y: 0, scale: 0.8 }}
             animate={{ opacity: 0, y: -60, scale: 1.4 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1 }}
             className="absolute -top-4 right-6 text-xl pointer-events-none"
           >
-            💖
+            {s.char}
           </motion.div>
         ))}
       </AnimatePresence>

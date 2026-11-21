@@ -182,18 +182,18 @@ export default function SunsetEnding() {
           </div>
 
           <h2 className="font-headline text-2xl sm:text-3xl text-rose-earth font-bold mb-3 text-center">
-            Thank You for Everything ♡
+            Thank You for Everything!
           </h2>
 
           <div className="space-y-4 text-sm sm:text-base text-ink-soft/90 leading-relaxed font-sans">
             <p>
-              Looking into your eyes, I see every kindness, every laugh, and every quiet sacrifice you have ever made for me. From the very first day in that auditorium to every sunset we've watched together, having you by my side has been the greatest blessing of my life.
+              Looking into your eyes, I see every kindness, every laugh, and everything you have ever done for me. From the very first day in that auditorium to every crazy memory we've shared, having you by my side has meant the absolute world to me.
             </p>
             <p>
-              Thank you for holding my hand when times were hard, for believing in me even when I struggled to believe in myself, and for loving me with a warmth that makes the whole world feel safe. Every meal we shared, every ride on that scooter, every laugh at our silly inside jokes, and every little thing you've left behind in my life has filled it with colors I never knew existed.
+              Thank you for being there for me when times were tough, for taking me to the hospital and offering your shoulder when I couldn't sleep in that auto, and for actually showing up to take care of me after that leg injury when I never believed anyone would. From ringing thali bells at the dhaba to failing escape rooms together, cooking Maggi with milk, and every single memory in between—thank you for everything, Dee.
             </p>
             <p>
-              You didn't just walk into my story—you became the best, brightest, and most cherished part of it.
+              You didn't just walk into my story—you became the best, brightest, and most unforgettable part of it.
             </p>
           </div>
 
@@ -202,12 +202,9 @@ export default function SunsetEnding() {
             <p className="font-headline italic text-sm text-rose-earth">
               Thank you for everything you've done for me, Dee.
             </p>
-            <p className="font-handwriting text-2xl text-blush-500 font-bold mt-1">
-              With all my love, forever & always,
+            <p className="font-handwriting text-2xl sm:text-3xl text-rose-dark font-bold mt-2">
+              By gay the spiderman REXY 🕷️
             </p>
-            <span className="font-handwriting text-3xl text-rose-dark font-bold block mt-0.5">
-              Rex ♡ 🐾
-            </span>
           </div>
 
           {/* Action Buttons */}
@@ -218,8 +215,8 @@ export default function SunsetEnding() {
               onClick={triggerLoveFireworks}
               className="w-full sm:w-auto bg-blush-500 hover:bg-blush-400 text-white font-medium px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span className="material-symbols-outlined text-lg">favorite</span>
-              <span>Send Her Love & Fireworks 💖</span>
+              <span className="material-symbols-outlined text-lg">celebration</span>
+              <span>Send Sparkles & Fireworks ✨</span>
             </motion.button>
 
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
